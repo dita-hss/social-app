@@ -33,7 +33,7 @@ export const Login = () => {
       userName: name,
       image: imageUrl,
     };
-    
+
     client.createIfNotExists(doc).then(() => {
       navigate('/', { replace: true });
     });
@@ -75,10 +75,8 @@ export const Login = () => {
             
             <GoogleLogin 
               onSuccess={handleLogin}
-              onError = {
-                () => console.log("Error")
-              
-                }/>
+              onError = {() => console.log("Error")}
+            />
             
           </div>
         </div>
