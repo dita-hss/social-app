@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import GoogleLogin from 'react-google-login';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import logo from '../assets/logo1.png';
@@ -8,20 +8,38 @@ import brunoVideo from '../assets/bruno.mp4';
 import brunoVideo2 from '../assets/bruno2.mp4';
 import brunoVideo3 from '../assets/bruno3.mp4';
 import './Login.css' ;
+import jwt_decode from "jwt-decode";
+
+
+
+import { client } from '../client'
+
+
 
 export const Login = () => {
-  const responseGoogle = (response) => {
-    localStorage.setItem('user', JSON.stringify(response.profileObj))
+  const user = false;
 
-    const { name, googleId, imageUrl } = response.profileObj
+  const handleLogin = (credentialResponse) => {
+    console.log("here");
+    const obj = jwt_decode(credentialResponse.credential);
+    const { name, aud: googleId, picture: imageUrl } = obj;
+    
+    console.log("here is the name:", name);
+    console.log("here is the picture:", imageUrl);
 
     const doc = {
       _id: googleId,
       _type: 'user',
       userName: name,
-      image: imageUrl
-    }
+      image: imageUrl,
+    };
+    
+    client.createIfNotExists(doc).then(() => {
+      navigate('/', { replace: true });
+    });
   }
+
+  const navigate = useNavigate();
   const videos = [brunoVideo, brunoVideo2, brunoVideo3, instaVideo];
   const [currentVideo, setCurrentVideo] = useState(0);
   const [isFading, setIsFading] = useState(false); 
@@ -54,31 +72,19 @@ export const Login = () => {
           </div>
 
           <div className='shadow-2xl' style={{ marginTop: '-80px' }}>
-            <GoogleLogin
-              clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}
-              render={(renderProps) => (
-                <button
-                  type="button"
-                  className="bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none"
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                >
-                  <FcGoogle className="mr-4" /> Sign in with google
-                </button>
-              )}
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy="single_host_origin"
-            />
-
             
-            />
-
+            <GoogleLogin 
+              onSuccess={handleLogin}
+              onError = {
+                () => console.log("Error")
+              
+                }/>
+            
           </div>
-
         </div>
       </div>
     </div>
+    
   )
 }
 
