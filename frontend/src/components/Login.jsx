@@ -17,16 +17,13 @@ import { client } from '../client'
 
 
 export const Login = () => {
-  const user = false;
-
+  const navigate = useNavigate();
   const handleLogin = (credentialResponse) => {
     console.log("here");
     const obj = jwt_decode(credentialResponse.credential);
-    const { name, aud: googleId, picture: imageUrl } = obj;
     
-    console.log("here is the name:", name);
-    console.log("here is the picture:", imageUrl);
-
+    const { name, aud: googleId, picture: imageUrl } = obj;
+  
     const doc = {
       _id: googleId,
       _type: 'user',
@@ -34,12 +31,12 @@ export const Login = () => {
       image: imageUrl,
     };
 
-    client.createIfNotExists(doc).then(() => {
+    client.createIfNotExists(doc).then(() => {      
       navigate('/', { replace: true });
     });
   }
 
-  const navigate = useNavigate();
+  
   const videos = [brunoVideo, brunoVideo2, brunoVideo3, instaVideo];
   const [currentVideo, setCurrentVideo] = useState(0);
   const [isFading, setIsFading] = useState(false); 
@@ -76,6 +73,8 @@ export const Login = () => {
             <GoogleLogin 
               onSuccess={handleLogin}
               onError = {() => console.log("Error")}
+              cookiePolicy="single_host_origin"
+
             />
             
           </div>

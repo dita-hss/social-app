@@ -12,8 +12,10 @@ const Home = () => {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const [user, setUser] = useState();
   const scrollRef = useRef(null);
+ 
+  console.log(localStorage)
   const userInfo = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
-
+  
 
   useEffect(() => {
     const query = userQuery(userInfo?.googleId);
