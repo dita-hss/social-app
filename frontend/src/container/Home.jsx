@@ -9,16 +9,18 @@ import Pins from './Pins'
 import { userQuery } from '../utils/data';
 
 const Home = () => {
+  
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const [user, setUser] = useState();
   const scrollRef = useRef(null);
- 
-  console.log(localStorage)
-  const userInfo = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
   
+ 
+  console.log("this is the storage: from Home" , localStorage)
+  const userInfo = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
+  console.log("this is the userInfo:" , userInfo)
 
   useEffect(() => {
-    const query = userQuery(userInfo?.googleId);
+    const query = userQuery(userInfo?.aud);
 
     client.fetch(query).then((data) => {
       setUser(data[0]);

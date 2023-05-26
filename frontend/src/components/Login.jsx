@@ -17,23 +17,32 @@ import { client } from '../client'
 
 
 export const Login = () => {
+  
   const navigate = useNavigate();
   const handleLogin = (credentialResponse) => {
-    console.log("here");
+    console.log("this is the credential response:", credentialResponse);
     const obj = jwt_decode(credentialResponse.credential);
+    console.log("this is the obj:", obj);
+    localStorage.setItem('user', JSON.stringify(obj));
+    console.log("this is the storage: from login" , localStorage)
+
+
+    const { aud, name, picture } = obj;
     
-    const { name, aud: googleId, picture: imageUrl } = obj;
-  
     const doc = {
-      _id: googleId,
+      _id: aud,
       _type: 'user',
       userName: name,
-      image: imageUrl,
+      image: picture,
     };
+
+    console.log("this is the doc:", doc);
+
 
     client.createIfNotExists(doc).then(() => {      
       navigate('/', { replace: true });
     });
+    
   }
 
   
