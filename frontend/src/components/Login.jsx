@@ -9,9 +9,6 @@ import brunoVideo2 from '../assets/bruno2.mp4';
 import brunoVideo3 from '../assets/bruno3.mp4';
 import './Login.css' ;
 import jwt_decode from "jwt-decode";
-
-
-
 import { client } from '../client'
 
 
@@ -20,12 +17,8 @@ export const Login = () => {
   
   const navigate = useNavigate();
   const handleLogin = (credentialResponse) => {
-    console.log("this is the credential response:", credentialResponse);
     const obj = jwt_decode(credentialResponse.credential);
-    console.log("this is the obj:", obj);
     localStorage.setItem('user', JSON.stringify(obj));
-    console.log("this is the storage: from login" , localStorage)
-
 
     const { aud, name, picture } = obj;
     
@@ -36,16 +29,12 @@ export const Login = () => {
       image: picture,
     };
 
-    console.log("this is the doc:", doc);
-
-
     client.createIfNotExists(doc).then(() => {      
       navigate('/', { replace: true });
     });
     
   }
 
-  
   const videos = [brunoVideo, brunoVideo2, brunoVideo3, instaVideo];
   const [currentVideo, setCurrentVideo] = useState(0);
   const [isFading, setIsFading] = useState(false); 

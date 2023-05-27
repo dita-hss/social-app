@@ -15,7 +15,6 @@ const categories = [
   {name: 'Other'},
 ]
 const Sidebar = ({ user, closeToggle }) => {
-  console.log("this is the user:" , user)
   const handleCloseSidebar = () => {
     if (closeToggle) closeToggle(false);
   }
