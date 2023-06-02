@@ -125,7 +125,7 @@ const Pin = ({ pin: {postedBy, image, _id, destination, save} }) => {
           src={postedBy?.image}
           alt="user-profile"
         />
-        <p className="font-semibold capitalize">{postedBy?.userName}</p>
+        <p className="font-semibold capitalize" style={{ fontSize: '12px' }}>{postedBy?.userName}</p>
       </Link>
     </div>
   );
